@@ -64,8 +64,16 @@
 		 *                         if the boot gets that far we have USB.
 		 * stdout-path is not used by either console -- it names the GENI debug
 		 * UART, which is not brought out on a retail unit.
+		 *
+		 * initcall_debug and ignore_loglevel belong to the era when the panel
+		 * was the only channel: they printed every initcall and overrode
+		 * loglevel, which is most of what scrolls past at boot. Now that USB
+		 * telnet and a full dmesg are available they buy nothing, so the line
+		 * ends in quiet instead. Neither one is part of the four load-bearing
+		 * parts above, and dropping them changes nothing about what earlycon
+		 * shows before device_initcall.
 		 */
-		bootargs = "earlycon=simplefb keep_bootcon console=drm_log console=tty0 initcall_blacklist=simplefb_driver_init initcall_debug ignore_loglevel clk_ignore_unused pd_ignore_unused rootwait mtdoops.dump_oops=1 hung_task_panic=1 softlockup_panic=1 panic=0 qcom_q6v5_pas.slpi_auto_boot=0";
+		bootargs = "earlycon=simplefb keep_bootcon console=drm_log console=tty0 initcall_blacklist=simplefb_driver_init clk_ignore_unused pd_ignore_unused rootwait mtdoops.dump_oops=1 hung_task_panic=1 softlockup_panic=1 panic=0 qcom_q6v5_pas.slpi_auto_boot=0 quiet";
 
 		framebuffer: framebuffer@b8000000 {
 			compatible = "simple-framebuffer";
